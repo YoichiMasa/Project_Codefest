@@ -4,6 +4,15 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileInputStream;
+import java.io.IOError;
+import java.io.IOException;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -35,5 +44,19 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void createFile(View v) throws IOException, JSONException {
+        JSONArray data = new JSONArray();
+        JSONObject example1 = new JSONObject();
+        example1.put("name", "information");
+        example1.put("name2", )
+        data.put(example1);
+
+        String text = data.toString();
+    }
+
+    public readFile(View v) {
+        FileInputStream fis = openFileInput("")
     }
 }
