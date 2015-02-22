@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">FoodStamps</string>
     <string name="title_activity_maps">Map</string>
+    <string name="action_settings">Settings</string>
+    <string name="health_option">Health Option</string>
+    <string-array name="scale">
+        <item>All</item>
+        <item>Healthy</item>
+        <item>Average</item>
+        <item>Unhealthy</item>
+    </string-array>
 </resources>

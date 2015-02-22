@@ -41,9 +41,9 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
 {
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private GoogleApiClient mGoogleApiClient;
-//    private Spinner healthOptions;
-//    private Marker mark;
-//    private ArrayList<Marker> markerList;
+    private Spinner healthOptions;
+    private Marker mark;
+    public ArrayList<Marker> markerList;
     public static final String TAG = MapsActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
@@ -53,12 +53,14 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         createMapView();
-//        markerList = new ArrayList<Marker>();
-//        healthOptions = (Spinner) findViewById(R.id.healthOptions);
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-//                R.array.scale, android.R.layout.simple_spinner_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        healthOptions.setAdapter(adapter);
+        markerList = new ArrayList<Marker>();
+        healthOptions = (Spinner) findViewById(R.id.healthOptions);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.scale, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        healthOptions.setAdapter(adapter);
+
+//        SpinnerActivity.setMarketList(markerList);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
         .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) this)
@@ -88,6 +90,60 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
             addMarker(storeName, receivedLoc, receivedH);
 
         }
+        healthOptions.setOnItemSelectedListener(new SpinnerActivity() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                Toast msg = Toast.makeText(this, "clicked", Toast.LENGTH_LONG);
+//                msg.show();
+                if (parent.getItemAtPosition(position).equals("Healthy"))//if select healthy
+                {
+                    for (int i = 0; i < markerList.size(); i++) {//make non-healthy invisible
+                        if (!markerList.get(i).getSnippet().equals("Healthy")) {
+                            markerList.get(i).setVisible(false);
+                        }
+                        else
+                        {
+                            markerList.get(i).setVisible(true);
+                        }
+                    }
+                }
+                if (parent.getItemAtPosition(position).equals("Average")) {
+                    for (int i = 0; i < markerList.size(); i++) {
+                        if (!markerList.get(i).getSnippet().equals("Average")) {
+                            markerList.get(i).setVisible(false);
+                        }
+                        else
+                        {
+                            markerList.get(i).setVisible(true);
+                        }
+                    }
+                }
+                ;
+                if (parent.getItemAtPosition(position).equals("Unhealthy")) {
+                    for (int i = 0; i < markerList.size(); i++) {
+                        if (!markerList.get(i).getSnippet().equals("Unhealthy")) {
+                            markerList.get(i).setVisible(false);
+                        }
+                        else
+                        {
+                            markerList.get(i).setVisible(true);
+                        }
+                    }
+
+                }
+                if (parent.getItemAtPosition(position).equals("All")) {
+                    for (int i = 0; i < markerList.size(); i++) {
+                        markerList.get(i).setVisible(true);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -143,25 +199,28 @@ public class MapsActivity extends FragmentActivity implements GoogleApiClient.Co
         /** Make sure that the map has been initialised **/
         if(null != mMap){
             if(healthy == 1)
-            {mMap.addMarker(new MarkerOptions()
+            {mark = mMap.addMarker(new MarkerOptions()
                     .position(storeLoc)
                     .title(storeName)
                     .snippet("Unhealthy")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                markerList.add(mark);
             }
             else if(healthy == 2)
-            { mMap.addMarker(new MarkerOptions()
+            {mark =  mMap.addMarker(new MarkerOptions()
                     .position(storeLoc)
                     .title(storeName)
                     .snippet("Average")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+                markerList.add(mark);
             }
             else if(healthy == 3)
-            {mMap.addMarker(new MarkerOptions()
+            {mark = mMap.addMarker(new MarkerOptions()
                     .position(storeLoc)
                     .title(storeName)
                     .snippet("Healthy")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                markerList.add(mark);
             }
         }
     }
