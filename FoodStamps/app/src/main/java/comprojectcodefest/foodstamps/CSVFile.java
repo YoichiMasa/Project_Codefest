@@ -21,7 +21,7 @@ public class CSVFile {
         this.inputStream = inputStream;
     }
 
-    public Hashtable read(){
+    public Hashtable<String, PairSet> read(){
         Hashtable storesAL = new Hashtable();
         LatLng store = null;
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -34,7 +34,19 @@ public class CSVFile {
                     double lng = Double.parseDouble(row[1]);
                     double lat = Double.parseDouble(row[2]);
                     store = new LatLng(lat, lng);
-                    storesAL.put(row[0], store);
+                    int healthy = 0;
+                    double temp = Math.random();
+                    if ((0.0 < temp) && (temp < 0.5 )) {
+                        healthy = 1;
+                    }
+                    else if ((0.5 < temp) && (temp < 0.8)) {
+                        healthy = 2;
+                    }
+                    else if ((0.8 < temp) && (temp < 1.0)) {
+                        healthy = 3;
+                    }
+                    PairSet current = new PairSet(store, healthy);
+                    storesAL.put(row[0], current);
                 }
 
             }
@@ -52,4 +64,6 @@ public class CSVFile {
         }
         return storesAL;
     }
+
 }
+
